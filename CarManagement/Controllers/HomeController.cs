@@ -1,32 +1,50 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
+﻿using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using CarManagement.Models;
+using Cosmonaut;
+using Cosmonaut.Extensions;
+using System.Net.Http;
+using System;
+using System.Security.Authentication;
 
 namespace CarManagement.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        private readonly ICosmosStore<Car> _cosmosStore;
+
+        public HomeController(ICosmosStore<Car> cosmosStore)
         {
-            return View();
+            _cosmosStore = cosmosStore;
         }
 
-        public IActionResult About()
+        [HttpGet("")]
+        public async Task<IActionResult> Index()
         {
-            ViewData["Message"] = "Your application description page.";
+            var cars = await _cosmosStore.Query().ToListAsync();
+            return View(cars);
 
-            return View();
+        }
+        [HttpPost("delete/{carId}")]
+        public async Task<IActionResult> DeleteCar(string carId)
+        {
+            await _cosmosStore.RemoveByIdAsync(carId);
+            return RedirectToAction("Index");
         }
 
-        public IActionResult Contact()
+        [HttpPost("addcar")]
+        public async Task<IActionResult> AddCar([FromForm] Car carToAdd)
         {
-            ViewData["Message"] = "Your contact page.";
+            await _cosmosStore.AddAsync(carToAdd);
+            return RedirectToAction("Index");
+        }
 
-            return View();
+        [HttpPost("updatecar")]
+        public async Task<IActionResult> Updatecar([FromForm] Car carToUpdate)
+        {
+            var result = await _cosmosStore.UpdateAsync(carToUpdate);
+            return RedirectToAction("Index");
         }
 
         public IActionResult Error()

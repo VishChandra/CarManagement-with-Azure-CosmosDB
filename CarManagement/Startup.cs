@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using CarManagement.Models;
+using Cosmonaut;
+using Cosmonaut.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -21,6 +20,10 @@ namespace CarManagement
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var setting = new CosmosStoreSettings("carmanagement", "https://car-management.documents.azure.com:443/", "Nl2jtiIGLKGqaMkPNpZuIPw36KFBvrIkTQOEdt7Y408SU8UXKcv3e3SPTGCAgHubYALvfj5rcdRuXrNdiYSHLQ==",
+                defaultCollectionThroughput: 1000);
+            services.AddCosmosStore<Car>(setting);
+
             services.AddMvc();
         }
 

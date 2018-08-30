@@ -1,0 +1,39 @@
+﻿@model Car
+
+<form asp-action="UpdateCar" method="post">
+    <div class="form-group" hidden>
+        <input asp-for="Id" class="form-control" value="@Model.Id" />
+    </div>
+    <div class="form-group">
+        <label asp-for="BrandName"></label>
+        <input asp-for="BrandName" class="form-control" value="@Model.BrandName" />
+        <span asp-validation-for="BrandName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="ModelName"></label>
+        <input asp-for="ModelName" class="form-control" value="@Model.ModelName" />
+        <span asp-validation-for="ModelName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <div class="checkbox">
+            <label asp-for="Automatic">
+                <input asp-for="Automatic" />
+                @Html.DisplayNameFor(m => m.Automatic)
+            </label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="BodyType"></label>
+        <input asp-for="BodyType" class="form-control" value="@Model.BodyType" />
+        <span asp-validation-for="BodyType" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Price"></label>
+        <input asp-for="Price" class="form-control" value="@Model.Price" />
+        <span asp-validation-for="Price" class="text-danger"></span>
+    </div>
+    <div class="button-box">
+        <button type="submit" class="btn btn-warning">Update car</button>
+        <button type="button" class="btn btn-danger cancel-btn">Cancel</button>
+    </div>
+</form>
